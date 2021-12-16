@@ -79,77 +79,79 @@ char* Gematria_Sequences(char* text, char* word){
     return ans;
 }
 
-// char* Atbash(char* word){
-//     int s_length = (int) strlen(word);
-//     char* ans = word;
+ int number_of_AB(char* str){
+    int ans = 0;
+     for (int i = 0; i < strlen(str); ++i) {
+         if(gematria(str[i]) != 0){
+             ans++;
+         }
+     }
+     return ans;
+}
 
-//     for (int i = 0; i < s_length/2; i++){
-//         char temp = ans[i];
-//         ans[i] = ans[s_length-i-1];
-//         ans[s_length-i-1] = temp;
-//     }
-//     return ans;
-// }
+ char* Atbash_Sequences(char *text,char *word){
+     int word_len = number_of_AB(word);
+     int s_length = (int) strlen(word);
+     char word_at[s_length];
+     char flipped_at[s_length];
+     int temp = 0;
 
-// char* Atbash_Sequences(char *text,char *word){
-//     int word_len = (int) strlen(word);
-//     char* word_gv = Atbash(word);
-//     char dest[] = "";
-//     char temp_ans[] = "";
-//     int len = (int) strlen(text);
+     for (int i = 0; i < s_length; i++){
+         int current_ascii = (int) word[i];
+         int current_asciiF = (int) word[s_length - 1- i];
 
-//     for (int i = 0; i < len; i++){
-//         strncat(dest,&text[i],1);
-//         int dest_len = (int) strlen(dest);
+         if(current_ascii > 64 && current_ascii < 91){
+             temp = 90 + 65 - current_ascii;
+             word_at[i] = temp;
+         }
+         else if(current_ascii > 96 && current_ascii < 123){
+             temp = 122 + 97 - current_ascii;
+             word_at[i] = temp;
+         }
 
-//         if(dest_len == word_len){
-//             int equals_word = strcmp(dest,word);
-//             int equals_atbash = strcmp(dest,word_gv);
+         if(current_asciiF > 64 && current_asciiF < 91){
+             temp = 90 + 65 - current_asciiF;
+             flipped_at[i] = temp;
+         }
+         else if(current_asciiF > 96 && current_asciiF < 123){
+             temp = 122 + 97 - current_asciiF;
+             flipped_at[i] = temp;
+         }
+     }
 
-//             if(equals_word == 0 || equals_atbash == 0){
-//                 strcat(temp_ans,dest);
-//                 strcat(temp_ans,"~");
-//             }
-//         }
-//         else if(dest_len > word_len){
-//             char* empty = "";
-//             strcpy(empty,dest);
-//         }
-//     }
-//     char* ans = temp_ans;
-//     return ans;
-// }
+     char dest[s_length];
+     char temp_ans[1024];
+     int len = (int) strlen(text);
 
-// int correct(char a, char* word){
-//     int len = (int) strlen(word);
+     for (int i = 0; i < len; i++) {
+         strncat(dest, &text[i], 1);
+         int dest_len = number_of_AB(dest);
 
-//     for (int i = 0; i < len; i++)
-//     {
-//         if(a == word[i] || '\n'){
-//             return 0;
-//         }
-//     }
-//     return 1;
-// }
+         if ((dest[0] != word_at[0]) && (dest[0] != flipped_at[0])) {
+             memset(dest, 0, strlen(dest));
+         } else {
+             if (dest_len == word_len) {
+                 int equals_atbash = strcmp(dest, word_at);
+                 int equals_flipped_atbash = strcmp(dest, flipped_at);
+
+                 if (equals_flipped_atbash == 0 || equals_atbash == 0) {
+                     strcat(temp_ans, dest);
+                     strcat(temp_ans, "~");
+
+                     i = i - strlen(dest) + 1;
+                     memset(dest, 0, strlen(dest));
+                 }
+             } else if (dest_len > word_len) {
+                 i = i - strlen(dest) + 1;
+                 memset(dest, 0, strlen(dest));
+             }
+         }
+     }
+     temp_ans[strlen(temp_ans) -1] = '\0';
+     char* ans = temp_ans;
+     return ans;
+ }
 
 // char* Anagram_Sequences(char *text,char *word){
-//     char temp_ans[] = "";
-//     int len = strlen(text);
-//     int added = 0;
-
-//     for (int i = 0; i < len; i++){
-//         if(correct(text[i],word) == 0){
-//             strncat(temp_ans, &text[i], 1);
-//             added++;
-//         }
-//         else{
-//             if (added > 0)
-//             {
-//                 strcat(temp_ans,"~");
-//                 added = 0;
-//             }
-//         }
-//     }
-//     char* ans = temp_ans;
-//     return ans;
+//
 // }
