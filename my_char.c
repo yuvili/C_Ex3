@@ -1,15 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 
+// function to calculate a gematrical value of a word
 int gematria_value(char *str){
     int s_length = strlen(str);
     int ans = 0;
     for (int i = 0; i < s_length; i++){
+        // ascii value of str[i]
         int temp = (int) str[i];
 
+        // if c is uppercase letter
         if(temp > 64 && temp < 91){
             temp = temp - 64;
         }
+        // if c is lowercase letter
         else if(temp > 96 && temp < 123){
             temp = temp - 96;
         }
@@ -21,12 +25,16 @@ int gematria_value(char *str){
     return ans;
 }
 
+// function to calculate a gematrical value of a single char
 int gematria(char c){
+    // ascii value of c
     int temp_gv = (int) c;
 
+    // if c is uppercase letter
     if(temp_gv > 64 && temp_gv < 91){
         temp_gv = temp_gv - 64;
     }
+    // if c is lowercase letter
     else if(temp_gv > 96 && temp_gv < 123){
         temp_gv = temp_gv - 96;
     }
@@ -81,6 +89,7 @@ char* Gematria_Sequences(char* text, char* word){
     return ans;
 }
 
+// computes the number of letters in a string
 int number_of_AB(char* str){
     int ans = 0;
      for (int i = 0; i < strlen(str); ++i) {
@@ -91,6 +100,7 @@ int number_of_AB(char* str){
      return ans;
 }
 
+// ignoring white space and comparing two strings
 int equals(char* word, char* check){
     int len = (int) strlen(check);
     int i = 0;
@@ -114,11 +124,11 @@ int equals(char* word, char* check){
     return b;
 }
 
- char* Atbash_Sequences(char *text,char *word){
+char* Atbash_Sequences(char *text,char *word){
      int word_len = number_of_AB(word);
      int s_length = (int) strlen(word);
-     char word_at[s_length+1];
-     char flipped_at[s_length+1];
+     char word_at[s_length+1]; // the atbash sequence of word
+     char flipped_at[s_length+1]; // the atbash sequence of word's flipped value
      int temp = 0;
 
      for (int i = 0; i < s_length ; i++){
@@ -179,7 +189,7 @@ int equals(char* word, char* check){
      char* ans = temp_ans;
      return ans;
  }
-
+// computes the number of letters and symbols in a string
 int number_of_symbols(char* str){
     int ans = 0;
     for (int i = 0; i < strlen(str); ++i) {
@@ -189,6 +199,7 @@ int number_of_symbols(char* str){
     }
     return ans;
 }
+// returns 0 if *check is an anagram of *word
 int anagram(int (*chars)[95], char* check){
     int len = (int) strlen(check);
     int temp_chars[95] = {'\0'};
@@ -211,17 +222,17 @@ int anagram(int (*chars)[95], char* check){
 }
 char* Anagram_Sequences(char *text,char *word){
     int word_len = (int) strlen(word);
-    int chars[95] = {'\0'};
+    int chars[95] = {'\0'}; // array of all the symbols appearances in *word
     for (int i = 0; i < word_len; ++i) {
         int ascii = (int) word[i] - 33;
         chars[ascii] += 1;
     }
 
      char temp_ans[1024];
-     int len = (int) strlen(text);
      char dest[word_len + 30];
      memset(dest, 0, word_len + 30);
 
+    int len = (int) strlen(text);
      for (int i = 0; i < len; i++){
          strncat(dest, &text[i], 1);
 
@@ -231,7 +242,7 @@ char* Anagram_Sequences(char *text,char *word){
          else {
              int syb_len = number_of_symbols(dest);
              int ascii = (int) text[i] - 33;
-             if (chars[ascii] > 0) {
+             if (chars[ascii] > 0) { // if *word contains text[i]
                  if (syb_len == word_len) {
                      int valid = anagram(&chars, dest);
                      if (valid == 0) {

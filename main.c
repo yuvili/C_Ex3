@@ -20,5 +20,6 @@ int main(){
     printf("\n");
     char* ans2 = Anagram_Sequences(text,word);
     printf("Anagram Sequences: %s",ans2);
+    printf("\n");
     return 0;
 }
