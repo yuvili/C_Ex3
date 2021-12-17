@@ -176,7 +176,7 @@ int equals(char* word, char* check){
      return ans;
  }
 
- int number_of_symbols(char* str){
+int number_of_symbols(char* str){
     int ans = 0;
     for (int i = 0; i < strlen(str); ++i) {
         if(str[i] != 32){
@@ -185,54 +185,64 @@ int equals(char* word, char* check){
     }
     return ans;
 }
-int anagram(int *chars, char* check){
+int anagram(int (*chars)[95], char* check){
     int len = (int) strlen(check);
-    int temp_chars[95];
+    int temp_chars[95] = {'\0'};
 
     for (int i = 0; i < len; ++i) {
         if(check[i] != 32) {
             int ascii = (int) check[i] - 33;
             temp_chars[ascii] +=1;
-            if (chars[ascii] == 0) {
+            if ((*chars)[ascii] == 0) {
                 return 1;
             }
         }
     }
     for (int i = 0; i < 95; ++i) {
-        if(chars[i] != temp_chars[i]){
+        if((*chars)[i] != temp_chars[i]){
             return 1;
         }
     }
     return 0;
 }
- char* Anagram_Sequences(char *text,char *word){
+char* Anagram_Sequences(char *text,char *word){
     int word_len = (int) strlen(word);
-    int chars[95] = {0};
+    int chars[95] = {'\0'};
     for (int i = 0; i < word_len; ++i) {
-         int ascii = (int) word[i] - 33;
-         chars[ascii] += 1;
-     }
+        int ascii = (int) word[i] - 33;
+        chars[ascii] += 1;
+    }
 
      char temp_ans[1024];
      int len = (int) strlen(text);
      char dest[word_len + 30];
+     memset(dest, 0, word_len + 30);
 
      for (int i = 0; i < len; i++){
          strncat(dest, &text[i], 1);
-         int syb_len = number_of_symbols(dest);
-         int ascii = (int) word[i] - 33;
-         if(chars[ascii] > 0) {
-             if (syb_len == word_len) {
-                 int valid = anagram(chars, dest);
-                 if (valid == 0) {
-                     strcat(temp_ans, dest);
-                     strcat(temp_ans, "~");
 
+         if (dest[0] == '\n' || dest[0] == '\t' || dest[0] == 32) {
+             dest[0] = 0;
+         }
+         else {
+             int syb_len = number_of_symbols(dest);
+             int ascii = (int) text[i] - 33;
+             if (chars[ascii] > 0) {
+                 if (syb_len == word_len) {
+                     int valid = anagram(&chars, dest);
+                     if (valid == 0) {
+                         strcat(temp_ans, dest);
+                         strcat(temp_ans, "~");
+
+                         i = i - strlen(dest) + 1;
+                         memset(dest, 0, strlen(dest));
+                     }
+                 } else if (syb_len > word_len) {
                      i = i - strlen(dest) + 1;
                      memset(dest, 0, strlen(dest));
                  }
-             } else if (syb_len > word_len) {
-                 i = i - strlen(dest) + 1;
+             }
+             else{
                  memset(dest, 0, strlen(dest));
              }
          }
