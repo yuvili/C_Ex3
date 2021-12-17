@@ -6,8 +6,8 @@
 #define WORD 30
 
 int main(){
-    char word[WORD];
-    char text[TXT];
+    char word[WORD+1];
+    char text[TXT+1];
 
     scanf("%30s", word);
     scanf("%[^'~']s", text);
@@ -18,8 +18,7 @@ int main(){
     char* ans1 = Atbash_Sequences(text,word);
     printf("Atbash Sequences: %s",ans1);
     printf("\n");
-    // char* ans2 = Anagram_Sequences(text,word);
-    // printf("\n");
-    // printf("Anagram Sequences: %s",ans2);
+     char* ans2 = Anagram_Sequences(text,word);
+     printf("Anagram Sequences: %s",ans2);
     return 0;
 }

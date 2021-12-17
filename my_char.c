@@ -88,15 +88,37 @@ char* Gematria_Sequences(char* text, char* word){
      }
      return ans;
 }
+int equals(char* word, char* check){
+    int len = (int) strlen(check);
+    int i = 0;
+    int j = 0;
+    int b = 0;
+
+    while(j<len){
+        if(word[i] == check[j]){
+            b = 0;
+            i++;
+            j++;
+        }
+        else if(check[i] == 32){
+            i --;
+            j++;
+        }
+        else{
+            return 1;
+        }
+    }
+    return b;
+}
 
  char* Atbash_Sequences(char *text,char *word){
      int word_len = number_of_AB(word);
      int s_length = (int) strlen(word);
-     char word_at[s_length];
-     char flipped_at[s_length];
+     char word_at[s_length+1];
+     char flipped_at[s_length+1];
      int temp = 0;
 
-     for (int i = 0; i < s_length; i++){
+     for (int i = 0; i < s_length ; i++){
          int current_ascii = (int) word[i];
          int current_asciiF = (int) word[s_length - 1- i];
 
@@ -118,8 +140,8 @@ char* Gematria_Sequences(char* text, char* word){
              flipped_at[i] = temp;
          }
      }
-
-     char dest[s_length];
+     flipped_at[s_length] = '\000';
+     char dest[60];
      char temp_ans[1024];
      int len = (int) strlen(text);
 
@@ -128,11 +150,13 @@ char* Gematria_Sequences(char* text, char* word){
          int dest_len = number_of_AB(dest);
 
          if ((dest[0] != word_at[0]) && (dest[0] != flipped_at[0])) {
-             memset(dest, 0, strlen(dest));
+             dest[0] = 0;
          } else {
              if (dest_len == word_len) {
-                 int equals_atbash = strcmp(dest, word_at);
-                 int equals_flipped_atbash = strcmp(dest, flipped_at);
+                 strncat(dest, &flipped_at[s_length], 1);
+
+                 int equals_atbash = equals(word_at,dest);
+                 int equals_flipped_atbash = equals(flipped_at, dest);
 
                  if (equals_flipped_atbash == 0 || equals_atbash == 0) {
                      strcat(temp_ans, dest);
@@ -152,6 +176,68 @@ char* Gematria_Sequences(char* text, char* word){
      return ans;
  }
 
-// char* Anagram_Sequences(char *text,char *word){
-//
-// }
+ int number_of_symbols(char* str){
+    int ans = 0;
+    for (int i = 0; i < strlen(str); ++i) {
+        if(str[i] != 32){
+            ans++;
+        }
+    }
+    return ans;
+}
+int anagram(int *chars, char* check){
+    int len = (int) strlen(check);
+    int temp_chars[95];
+
+    for (int i = 0; i < len; ++i) {
+        if(check[i] != 32) {
+            int ascii = (int) check[i] - 33;
+            temp_chars[ascii] +=1;
+            if (chars[ascii] == 0) {
+                return 1;
+            }
+        }
+    }
+    for (int i = 0; i < 95; ++i) {
+        if(chars[i] != temp_chars[i]){
+            return 1;
+        }
+    }
+    return 0;
+}
+ char* Anagram_Sequences(char *text,char *word){
+    int word_len = (int) strlen(word);
+    int chars[95] = {0};
+    for (int i = 0; i < word_len; ++i) {
+         int ascii = (int) word[i] - 33;
+         chars[ascii] += 1;
+     }
+
+     char temp_ans[1024];
+     int len = (int) strlen(text);
+     char dest[word_len + 30];
+
+     for (int i = 0; i < len; i++){
+         strncat(dest, &text[i], 1);
+         int syb_len = number_of_symbols(dest);
+         int ascii = (int) word[i] - 33;
+         if(chars[ascii] > 0) {
+             if (syb_len == word_len) {
+                 int valid = anagram(chars, dest);
+                 if (valid == 0) {
+                     strcat(temp_ans, dest);
+                     strcat(temp_ans, "~");
+
+                     i = i - strlen(dest) + 1;
+                     memset(dest, 0, strlen(dest));
+                 }
+             } else if (syb_len > word_len) {
+                 i = i - strlen(dest) + 1;
+                 memset(dest, 0, strlen(dest));
+             }
+         }
+     }
+     temp_ans[strlen(temp_ans) -1] = '\0';
+     char* ans = temp_ans;
+     return ans;
+ }
