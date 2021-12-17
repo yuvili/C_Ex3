@@ -39,7 +39,9 @@ int gematria(char c){
 char* Gematria_Sequences(char* text, char* word){
     int word_gv = gematria_value(word);
     char dest[1024];
+    memset(dest,0,1024);
     char temp_ans[1024];
+    memset(temp_ans,0,1024);
     int len = (int) strlen(text);
 
     for (int i = 0; i < len; i++){
@@ -79,7 +81,7 @@ char* Gematria_Sequences(char* text, char* word){
     return ans;
 }
 
- int number_of_AB(char* str){
+int number_of_AB(char* str){
     int ans = 0;
      for (int i = 0; i < strlen(str); ++i) {
          if(gematria(str[i]) != 0){
@@ -88,6 +90,7 @@ char* Gematria_Sequences(char* text, char* word){
      }
      return ans;
 }
+
 int equals(char* word, char* check){
     int len = (int) strlen(check);
     int i = 0;
@@ -142,16 +145,17 @@ int equals(char* word, char* check){
      }
      flipped_at[s_length] = '\000';
      char dest[60];
+     memset(dest, 0, 60);
      char temp_ans[1024];
      int len = (int) strlen(text);
 
      for (int i = 0; i < len; i++) {
          strncat(dest, &text[i], 1);
-         int dest_len = number_of_AB(dest);
 
          if ((dest[0] != word_at[0]) && (dest[0] != flipped_at[0])) {
              dest[0] = 0;
          } else {
+             int dest_len = number_of_AB(dest);
              if (dest_len == word_len) {
                  strncat(dest, &flipped_at[s_length], 1);
 
