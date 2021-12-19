@@ -44,7 +44,7 @@ int gematria(char c){
     return temp_gv;
 }
 
-char* Gematria_Sequences(char* text, char* word){
+void Gematria_Sequences(char* text, char* word){
     int word_gv = gematria_value(word);
     char dest[1024];
     memset(dest,0,1024);
@@ -57,7 +57,7 @@ char* Gematria_Sequences(char* text, char* word){
 
         if(temp_gv < word_gv){
             if(strcmp(dest,"\000") == 0 && temp_gv == 0){
-                temp_gv == 0;
+                dest[0] = 0;
             }
             else{
                 strncat(dest, &text[i], 1);
@@ -86,7 +86,7 @@ char* Gematria_Sequences(char* text, char* word){
     }
     temp_ans[strlen(temp_ans) -1] = '\0';
     char* ans = temp_ans;
-    return ans;
+    printf("Gematria Sequences: %s\n",ans);
 }
 
 // computes the number of letters in a string
@@ -124,7 +124,7 @@ int equals(char* word, char* check){
     return b;
 }
 
-char* Atbash_Sequences(char *text,char *word){
+void Atbash_Sequences(char *text,char *word){
      int word_len = number_of_AB(word);
      int s_length = (int) strlen(word);
      char word_at[s_length+1]; // the atbash sequence of word
@@ -187,7 +187,7 @@ char* Atbash_Sequences(char *text,char *word){
      }
      temp_ans[strlen(temp_ans) -1] = '\0';
      char* ans = temp_ans;
-     return ans;
+    printf("Atbash Sequences: %s\n",ans);
  }
 // computes the number of letters and symbols in a string
 int number_of_symbols(char* str){
@@ -220,7 +220,7 @@ int anagram(int (*chars)[95], char* check){
     }
     return 0;
 }
-char* Anagram_Sequences(char *text,char *word){
+void Anagram_Sequences(char *text,char *word){
     int word_len = (int) strlen(word);
     int chars[95] = {'\0'}; // array of all the symbols appearances in *word
     for (int i = 0; i < word_len; ++i) {
@@ -264,5 +264,5 @@ char* Anagram_Sequences(char *text,char *word){
      }
      temp_ans[strlen(temp_ans) -1] = '\0';
      char* ans = temp_ans;
-     return ans;
+     printf("Anagram Sequences: %s",ans);
  }

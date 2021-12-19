@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include "my_char.h"
 
 #define TXT 1024
@@ -12,11 +11,8 @@ int main(){
     scanf("%30s",word);
     scanf("%[^'~']s",text);
 
-    char* ans = Gematria_Sequences(text,word);
-    printf("Gematria Sequences: %s\n",ans);
-    char* ans1 = Atbash_Sequences(text,word);
-    printf("Atbash Sequences: %s\n",ans1);
-    char* ans2 = Anagram_Sequences(text,word);
-    printf("Anagram Sequences: %s",ans2);
+    Gematria_Sequences(text,word);
+    Atbash_Sequences(text,word);
+    Anagram_Sequences(text,word);
     return 0;
 }
