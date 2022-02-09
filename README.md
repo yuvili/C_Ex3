@@ -1,6 +1,6 @@
 # String functions in C programing 
 This project includes 3 functions that can be used on string in C programing.
-The functions are immplemented in the *my_char.c* file, and can be used in the *main.c* file.
+The functions are implemented in the *my_char.c* file, and can be used in the *main.c* file.
 The program scans the user input in *main.c*, by reciving a word up to 30 characters, and a certain text up to 1024 characters.
 After reciving the user's input, the two strings will be send as an input to the functions and the resulted output will be printed on the screen to the user.
 
